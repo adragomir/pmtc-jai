@@ -1,7 +1,7 @@
 #import "Basic";
 #import "Compiler";
 
-#load "/Users/adragomi/build_cross.jai";
+#load "build_cross.jai";
 
 build :: () {
     set_working_directory(#filepath);

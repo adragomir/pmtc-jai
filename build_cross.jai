@@ -163,6 +163,81 @@ create_workspace_darwin :: (name: string, output: string) -> Workspace {
     return w;
 }
 
+parse_code_node :: (node : *Code_Node) {
+    log("NODE % %\n", node.kind, node.location.enclosing_load.fully_pathed_filename);
+    // if node.kind == {
+    //     // @Todo: #import and #load should open the corresponding file.
+    //     case .IDENT;
+    //         ident := cast(*Code_Ident)node;
+    //         decl := ident.resolved_declaration;
+    //         l0 := decl.location.l0;
+    //         c0 := decl.location.c0;
+    //
+    //         l1 := decl.location.l1;
+    //         c1 := decl.location.c1;
+    //
+    //         if decl.expression.kind == .PROCEDURE_HEADER {
+    //             proc := cast(*Code_Procedure_Header) decl.expression;
+    //             for proc.returns {
+    //                 if it.location.l1 >= l1 {
+    //                     l1 = it.location.l1;
+    //                     c1 = it.location.c1;
+    //                 }
+    //             }
+    //         }
+    //         if decl.expression.kind == .STRUCT {
+    //             structure := cast(*Code_Struct) decl.expression;
+    //             if structure.block.location.l1 >= l1 {
+    //                 l1 = structure.block.location.l1;
+    //                 c1 = structure.block.location.c1;
+    //             }
+    //             l1 += 1; // Closing brace @Hack
+    //         }
+    //         // For some weird reason we can't call print with integers here.
+    //         // It causes an assertion, that hangs the program. 
+    //         // We build the string manually instead.
+    //         builder : String_Builder;
+    //         append(*builder, "OK|");
+    //         append(*builder, decl.location.enclosing_load.fully_pathed_filename);
+    //         append(*builder, "|");
+    //         print_integer(*builder, formatInt(l0, 10, 1, 0, ""));
+    //         append(*builder, "|");
+    //         print_integer(*builder, formatInt(c0, 10, 1, 0, ""));
+    //         append(*builder, "|");
+    //         print_integer(*builder, formatInt(l1, 10, 1, 0, ""));
+    //         append(*builder, "|");
+    //         print_integer(*builder, formatInt(c1, 10, 1, 0, ""));
+    //         append(*builder, "\n");
+    //         str := builder_to_string(*builder);
+    //         write_string(str);
+    //
+    //         found = true;
+    // };
+}
+
+// message_introspect :: (m: *Message) {
+//     if m.kind == .TYPECHECKED; {
+//         tc := cast(*Message_Typechecked) message;
+//         for decl : tc.declarations {
+//             if decl.node_flags & .CREATED_BY_DESUGARING  continue;
+//             log("decl: %\n", decl.expression.entry.name);
+//         }
+//         for ph : tc.procedure_headers {
+//             log("func: %|%\n", ph.expression.name, ph.expression.foreign_function_name);
+//             log("  func: % %\n", ph.expression.base.location.enclosing_load.fully_pathed_filename, ph.expression.base.location.l0);
+//         }
+//         for str : tc.structs {
+//             log("struct: %\n", str.expression.defined_type.name);
+//         }
+//         for oth : tc.others {
+//             log("oth: %\n", oth.expression.kind);
+//         }
+//         for sub_expr : tc.all {
+//             // parse_code_node(sub_expr);
+//         }
+//     }
+// }
+
 run_build_darwin :: (files: [] string, w: Workspace, verbose: bool) {
     pp := Program_Print.get_plugin();
 
@@ -186,7 +261,6 @@ run_build_darwin :: (files: [] string, w: Workspace, verbose: bool) {
                     run_darwin_link(message.workspace, phase, verbose);
                 }
             }
-
             case .COMPLETE; break;
         }
     }
