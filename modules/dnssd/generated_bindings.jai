@@ -24,7 +24,7 @@ kDNSServiceInterfaceIndexAny :: 0;
 
 DNSServiceSleepKeepaliveReply :: #type (a0: DNSServiceRef, a1: DNSServiceErrorType, a2: *void) -> void #c_call;
 
-DNSServiceSetDispatchQueue :: (service: DNSServiceRef, queue: dispatch_queue_t) -> DNSServiceErrorType #foreign libdnssd;
+// DNSServiceSetDispatchQueue :: (service: DNSServiceRef, queue: dispatch_queue_t) -> DNSServiceErrorType #foreign libdnssd;
 
 TXTRecordGetItemAtIndex :: (txtLen: u16, txtRecord: *void, itemIndex: u16, keyBufLen: u16, key: *u8, valueLen: *u8, value: **void) -> DNSServiceErrorType #foreign libdnssd;
 
@@ -508,10 +508,3 @@ TXTRecordGetValuePtr :: (txtLen: u16, txtRecord: *void, key: *u8, valueLen: *u8)
 libdnssd :: #foreign_system_library "libSystem";
 #scope_file
 
-#if OS == .WINDOWS {
-    libdnssd :: #foreign_library "win/glfw";
-} else #if OS == .LINUX {
-    libdnssd :: #foreign_library "linux/libglfw.so";
-} else #if OS == .MACOS {
-    libdnssd :: #foreign_library "mac/libglfw.dylib";
-}
