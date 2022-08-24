@@ -1,0 +1,3 @@
+[submodule "modules/proto"]
+	path = modules/proto
+	url = https://github.com/adragomir/jai-proto.git
