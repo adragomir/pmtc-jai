@@ -2,3 +2,5 @@
 pp_*.txt
 main
 generate
+modules/proto/generator/vendor
+modules/proto/generator/protoc-gen-jai
